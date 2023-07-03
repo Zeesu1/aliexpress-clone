@@ -1,8 +1,8 @@
 <template>
   <div id="MainLayout" class="w-full fixed z-50">
-    <div id="TopMenu" class="w-full bg-#fafafa border-b md:block hidden">
+    <div id="TopMenu" class="w-full bg-#fafafa border-b h-10 md:block hidden">
       <ul
-        class="flex items-center justify-end text-xs text-#333 font-light px-2 h-10 bg-#fafafa max-w-1200px"
+        class="h-full flex items-center justify-end text-xs text-#333 font-light px-2 bg-#fafafa max-w-1200px"
       >
         <li
           class="border-(r r-gray-400) px-3 hover:text-#ff4646 cursor-pointer"
@@ -25,27 +25,38 @@
           Buyer Protection
         </li>
         <li class="px-3 hover:text-#ff4646 cursor-pointer">
-          <Icon name="ic:sharp-install-mobile" size="17" />
+          <Icon name="mdi:cellphone-iphone" size="17" />
           App
         </li>
         <li
-          class="relative flex items-center px-2.5 h-full hover:text-#ff4646 cursor-pointer transition-300"
+          class="relative h-full hover:text-#ff4646 cursor-pointer transition"
           :class="
-            isAccountMenuOpen
-              ? 'bg-white border z-40 shadow-[0_15px_100px_40px_rgba(0,0,0,0.3)]'
-              : 'border border-#fafafa'
+            isAccountMenuOpen ? 'bg-white border-x z-40' : 'border border-#fafafa'
           "
           @mouseenter="isAccountMenuOpen = true"
           @mouseleave="isAccountMenuOpen = false"
         >
-          <Icon name="ph:user-thin" size="17" />
-          Account
-          <Icon name="mdi:chevron-down" size="15" class="ml-5" />
+          <div
+            class="relative h-full w-full px-2.5 relative flex items-center z-40 border-b-0"
+            :class="isAccountMenuOpen ? 'bg-white' : ''"
+          >
+            <Icon name="ph:user-thin" size="17" />
+            Account
+            <Icon
+              name="mdi:chevron-down"
+              size="15"
+              :class="[
+                'ml-5',
+                'transition',
+                isAccountMenuOpen ? 'transform rotate-180' : '',
+              ]"
+            />
+          </div>
 
           <div
             id="AccountMenu"
             v-if="isAccountMenuOpen"
-            class="absolute bg-white w-220px text-#333 z-40 top-38px -left-100px border-x border-b"
+            class="absolute bg-white w-220px text-#333 z-9 top-32px -right-1px border shadow-[0_2px_8px_0_rgba(0,0,0,.1)]"
           >
             <div v-if="true">
               <div class="text-semibold text-15px my-4 px-3">
@@ -105,7 +116,7 @@
                 class="mr-2"
               />
               <button class="flex items-center h-full p-1.5 px-2 bg-#FF4646">
-                <Icon name="ph:magnifying-glass" size="20" color="#ffffff" />
+                <Icon name="mdi:magnify" size="20" color="#ffffff" />
               </button>
             </div>
 
@@ -131,7 +142,7 @@
 
         <NuxtLink to="/shoppingcart" class="flex items-center">
           <button
-            class="relative md:block hidden"
+            class="relative md:block hidden bg-transparent"
             @mouseenter="isCartHover = true"
             @mouseleave="isCartHover = false"
           >
