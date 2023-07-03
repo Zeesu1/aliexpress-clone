@@ -14,17 +14,17 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxtjs/supabase": "^0.3.7",
-    "@types/node": "^18.16.18",
-    "@unocss/nuxt": "^0.53.1",
-    "nuxt": "^3.5.3",
-    "nuxt-icon": "^0.4.1"
+    "@types/node": "^18.16.19",
+    "@unocss/nuxt": "^0.53.4",
+    "nuxt": "^3.6.1",
+    "nuxt-icon": "^0.4.2"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.11",
-    "@prisma/client": "^4.16.0",
+    "@prisma/client": "^4.16.2",
     "@stripe/stripe-js": "^1.54.1",
-    "@unocss/reset": "^0.53.1",
-    "prisma": "^4.16.0",
-    "stripe": "^12.9.0"
+    "@unocss/reset": "^0.53.4",
+    "prisma": "^4.16.2",
+    "stripe": "^12.11.0"
   }
 }
