@@ -66,14 +66,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useUserStore } from '~/stores/user'
+
 const userStore = useUserStore()
 
 const client = useSupabaseClient()
 const user = useSupabaseUser()
 
-const goTo = url => {
+const goTo = (url: string) => {
   userStore.isMenuOverlay = false
   return navigateTo(`/${url}`)
 }

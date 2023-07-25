@@ -2,9 +2,11 @@
 export default defineNuxtConfig({
   pages: true,
   modules: [
-    // '@nuxtjs/supabase',
+    '@nuxtjs/supabase',
     '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
     '@unocss/nuxt',
+    'nuxt-lodash',
     'nuxt-icon',
   ],
   css: ['~/assets/css/main.css'],

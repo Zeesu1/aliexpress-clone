@@ -2,7 +2,7 @@
   <div id="MainLayout" class="w-full fixed z-50">
     <div id="TopMenu" class="w-full bg-#fafafa border-b h-10 md:block hidden">
       <ul
-        class="h-full flex items-center justify-end text-xs text-#333 font-light px-2 bg-#fafafa max-w-1200px"
+        class="h-full flex items-center justify-end text-xs text-#333 font-light px-2 bg-#fafafa max-w-1200px mx-auto"
       >
         <li
           class="border-(r r-gray-400) px-3 hover:text-#ff4646 cursor-pointer"
@@ -31,7 +31,9 @@
         <li
           class="relative h-full hover:text-#ff4646 cursor-pointer transition"
           :class="
-            isAccountMenuOpen ? 'bg-white border-x z-40' : 'border border-#fafafa'
+            isAccountMenuOpen
+              ? 'bg-white border-x z-40'
+              : 'border border-#fafafa'
           "
           @mouseenter="isAccountMenuOpen = true"
           @mouseleave="isAccountMenuOpen = false"
@@ -53,40 +55,42 @@
             />
           </div>
 
-          <div
-            id="AccountMenu"
-            v-if="isAccountMenuOpen"
-            class="absolute bg-white w-220px text-#333 z-9 top-32px -right-1px border shadow-[0_2px_8px_0_rgba(0,0,0,.1)]"
-          >
-            <div v-if="true">
-              <div class="text-semibold text-15px my-4 px-3">
-                Welcome To AliExpress!
+          <Transition name="fade">
+            <div
+              id="AccountMenu"
+              v-if="isAccountMenuOpen"
+              class="absolute bg-white w-220px text-#333 z-9 top-32px -right-1px border shadow-[0_2px_8px_0_rgba(0,0,0,.1)]"
+            >
+              <div v-if="true">
+                <div class="text-semibold text-15px my-4 px-3">
+                  Welcome To AliExpress!
+                </div>
+                <div class="flex items-center gap-1 px-3 mb-3">
+                  <NuxtLink
+                    to="/auth"
+                    class="bg-#FF4646 text-center w-full text-16px rounded-sm text-white font-semibold p-2"
+                  >
+                    Login / Register
+                  </NuxtLink>
+                </div>
+                <div class="border-b" />
+                <ul class="bg-white">
+                  <li
+                    @click="navigateTo('/orders')"
+                    class="text-13px py-2 px-4 w-full hover:bg-gray-200"
+                  >
+                    My Orders
+                  </li>
+                  <li
+                    v-if="true"
+                    class="text-13px py-2 px-4 w-full hover:bg-gray-200"
+                  >
+                    Sign out
+                  </li>
+                </ul>
               </div>
-              <div class="flex items-center gap-1 px-3 mb-3">
-                <NuxtLink
-                  to="/auth"
-                  class="bg-#FF4646 text-center w-full text-16px rounded-sm text-white font-semibold p-2"
-                >
-                  Login / Register
-                </NuxtLink>
-              </div>
-              <div class="border-b" />
-              <ul class="bg-white">
-                <li
-                  @click="navigateTo('/orders')"
-                  class="text-13px py-2 px-4 w-full hover:bg-gray-200"
-                >
-                  My Orders
-                </li>
-                <li
-                  v-if="true"
-                  class="text-13px py-2 px-4 w-full hover:bg-gray-200"
-                >
-                  Sign out
-                </li>
-              </ul>
             </div>
-          </div>
+          </Transition>
         </li>
       </ul>
     </div>
@@ -95,7 +99,7 @@
         class="flex lg:justify-start justify-between gap-10 max-w-1150px w-full px-3 py-5 mx-auto"
       >
         <NuxtLink to="/" class="min-w-170px">
-          <img width="170" src="assets/images/AliExpress-logo.png" />
+          <img width="170" src="~/assets/images/AliExpress-logo.png" />
         </NuxtLink>
 
         <div class="max-w-700px w-full md:block hidden">
@@ -120,23 +124,22 @@
               </button>
             </div>
 
-            <div
-              v-if="items && items.data"
-              class="absolute bg-white max-w-700px h-auto w-full"
-            >
-              <div v-for="item in items.data" class="p-1">
-                <NuxtLink
-                  :to="`/item/${item.id}`"
-                  class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
-                >
-                  <div class="flex items-center">
-                    <img class="rounded-md" width="40" :src="item.url" />
-                    <div class="truncate ml-2">{{ item.title }}</div>
-                  </div>
-                  <div class="truncate">${{ item.price / 100 }}</div>
-                </NuxtLink>
+            <Transition name="fade">
+              <div v-if="items && items.length > 0" class="absolute bg-white max-w-700px h-auto w-full rounded-md shadow-lg">
+                <div v-for="item in items" class="p-1" :key="item.id">
+                  <NuxtLink
+                    :to="`/item/${item.id}`"
+                    class="flex items-center justify-between w-full cursor-pointer hover:bg-gray-100"
+                  >
+                    <div class="flex items-center">
+                      <img class="rounded-md" width="40" :src="item.url" />
+                      <div class="truncate ml-2">{{ item.title }}</div>
+                    </div>
+                    <div class="truncate">${{ item.price }}</div>
+                  </NuxtLink>
+                </div>
               </div>
-            </div>
+            </Transition>
           </div>
         </div>
 
@@ -149,8 +152,7 @@
             <span
               class="absolute flex items-center justify-center -right-3px top-0 bg-#FF4646 h-17px min-w-17px text-xs text-white px-0.5 rounded-full"
             >
-              9
-              <!-- {{ userStore.cart.length }} -->
+              {{ userStore.cart?.length }}
             </span>
             <div class="min-w-40px">
               <Icon
@@ -163,37 +165,65 @@
         </NuxtLink>
 
         <button
-          class="md:hidden block rounded-full p-1.5 -mt-4px hover:bg-gray-200"
+          class="md:hidden block rounded-full p-1.5 -mt-4px bg-transparent hover:bg-gray-200"
         >
           <Icon name="radix-icons:hamburger-menu" size="33" />
         </button>
       </div>
     </div>
   </div>
+
+  <Loading v-if="userStore.isLoading" />
+
+  <div class="lg:pt-150px md:pt-130px pt-80px" />
+  <slot />
+
+  <Footer v-if="!userStore.isLoading" />
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { Products } from '@prisma/client'
+import { useUserStore } from '~/stores/user'
+
+const userStore = useUserStore()
+
 const isAccountMenuOpen = ref(false)
 const isCartHover = ref(false)
 
 const isSearching = ref(false)
 const searchItem = ref('')
-const items = ref(null)
+const items = ref<Products[]>([])
 
-const searchByName = async () => {
+const searchByName = useDebounce(async () => {
   isSearching.value = true
-  // items.value = await useFetch(`/api/prisma/search-by-name/${searchItem.value}`)
+  const { data } = await useFetch(
+    `/api/prisma/search-by-name/${searchItem.value}`
+  )
+  items.value = data.value?.items || []
   isSearching.value = false
-}
+})
 watch(
   () => searchItem.value,
   async () => {
     if (!searchItem.value) {
       setTimeout(() => {
-        items.value = null
+        items.value = []
         isSearching.value = false
       }, 500)
     }
+    searchByName()
   }
 )
 </script>
+
+<style>
+.fade-enter,
+.fade-enter-from,
+.fade-leave-active {
+  opacity: 0;
+}
+
+.fade-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+</style>
