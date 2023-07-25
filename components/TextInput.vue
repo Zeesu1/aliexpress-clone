@@ -21,7 +21,7 @@
 
 <script lang="ts" setup>
 const props = defineProps({
-  input: {
+  value: {
     type: String as PropType<string | null>,
     default: '',
   },
@@ -35,7 +35,7 @@ const props = defineProps({
   },
   placeholder: String,
   error: String,
-  onInput: Function as PropType<(value: string | null) => void>,
+  'onUpdate:value': Function as PropType<(value: string | null) => void>,
 })
 
 const { placeholder, max, inputType, error } = toRefs(props)
@@ -43,7 +43,7 @@ const { placeholder, max, inputType, error } = toRefs(props)
 let isFocused = ref(false)
 
 const inputRef = computed({
-  get: () => props.input,
-  set: value => props.onInput?.(value),
+  get: () => props.value,
+  set: value => props['onUpdate:value']?.(value),
 })
 </script>

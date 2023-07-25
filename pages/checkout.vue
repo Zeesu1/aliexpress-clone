@@ -5,11 +5,10 @@
         <div class="md:w-65%">
           <div class="bg-white rounded-lg p-4">
             <div class="text-xl font-semibold mb-2">Shipping Address</div>
-
-            <div v-if="currentAddress && currentAddress.data">
+            <div v-if="currentAddress">
               <NuxtLink
                 to="/address"
-                class="flex items-center pb-2 text-blue-500 hover:text-red-400"
+                class="flex items-center pb-2 text-blue-500 hover:text-red-400 transition-color"
               >
                 <Icon name="mdi:plus" size="18" class="mr-2" />
                 Update Address
@@ -20,28 +19,28 @@
                 <ul class="text-xs">
                   <li class="flex items-center gap-2">
                     <div>Contact name:</div>
-                    <div class="font-bold">{{ currentAddress.data.name }}</div>
+                    <div class="font-bold">{{ currentAddress.name }}</div>
                   </li>
                   <li class="flex items-center gap-2">
                     <div>Address:</div>
                     <div class="font-bold">
-                      {{ currentAddress.data.address }}
+                      {{ currentAddress.address }}
                     </div>
                   </li>
                   <li class="flex items-center gap-2">
                     <div>Zip Code:</div>
                     <div class="font-bold">
-                      {{ currentAddress.data.zipcode }}
+                      {{ currentAddress.zipcode }}
                     </div>
                   </li>
                   <li class="flex items-center gap-2">
                     <div>City:</div>
-                    <div class="font-bold">{{ currentAddress.data.city }}</div>
+                    <div class="font-bold">{{ currentAddress.city }}</div>
                   </li>
                   <li class="flex items-center gap-2">
                     <div>Country:</div>
                     <div class="font-bold">
-                      {{ currentAddress.data.country }}
+                      {{ currentAddress.country }}
                     </div>
                   </li>
                 </ul>
@@ -146,9 +145,10 @@ onBeforeMount(async () => {
 
   total.value = 0.0
   if (user.value) {
-    currentAddress.value = await useFetch(
+    const { data } = await useFetch(
       `/api/prisma/get-address-by-user/${user.value.id}`
     )
+    currentAddress.value = data.value.address
     setTimeout(() => (userStore.isLoading = false), 200)
   }
 })
@@ -247,11 +247,11 @@ const createOrder = async stripeId => {
     body: {
       userId: user.value.id,
       stripeId: stripeId,
-      name: currentAddress.value.data.name,
-      address: currentAddress.value.data.address,
-      zipcode: currentAddress.value.data.zipcode,
-      city: currentAddress.value.data.city,
-      country: currentAddress.value.data.country,
+      name: currentAddress.value.name,
+      address: currentAddress.value.address,
+      zipcode: currentAddress.value.zipcode,
+      city: currentAddress.value.city,
+      country: currentAddress.value.country,
       products: userStore.checkout,
     },
   })

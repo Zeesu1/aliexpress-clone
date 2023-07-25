@@ -5,41 +5,41 @@
         <div class="text-xl text-bold mb-2">Address Details</div>
         <form @submit.prevent="submit()">
           <TextInput
+            v-model:value="contactName"
             class="w-full"
             placeholder="Contact Name"
-            v-model:input="contactName"
             inputType="text"
             :error="error && error.type == 'contactName' ? error.message : ''"
           />
 
           <TextInput
+            v-model:value="address"
             class="w-full mt-2"
             placeholder="Address"
-            v-model:input="address"
             inputType="text"
             :error="error && error.type == 'address' ? error.message : ''"
           />
 
           <TextInput
+            v-model:value="zipCode"
             class="w-full mt-2"
             placeholder="Zip Code"
-            v-model:input="zipCode"
             inputType="text"
             :error="error && error.type == 'zipCode' ? error.message : ''"
           />
 
           <TextInput
+            v-model:value="city"
             class="w-full mt-2"
             placeholder="City"
-            v-model:input="city"
             inputType="text"
             :error="error && error.type == 'city' ? error.message : ''"
           />
 
           <TextInput
+            v-model:value="country"
             class="w-full mt-2"
             placeholder="Country"
-            v-model:input="country"
             inputType="text"
             :error="error && error.type == 'country' ? error.message : ''"
           />
@@ -133,20 +133,17 @@ const submit = async () => {
   }
 
   if (isUpdate.value) {
-    await useFetch(
-      `/api/prisma/update-address/${currentAddress.value.id}`,
-      {
-        method: 'PATCH',
-        body: {
-          userId: user.value.id,
-          name: contactName.value,
-          address: address.value,
-          zipCode: zipCode.value,
-          city: city.value,
-          country: country.value,
-        },
-      }
-    )
+    await useFetch(`/api/prisma/update-address/${currentAddress.value.id}`, {
+      method: 'PATCH',
+      body: {
+        userId: user.value.id,
+        name: contactName.value,
+        address: address.value,
+        zipCode: zipCode.value,
+        city: city.value,
+        country: country.value,
+      },
+    })
 
     isWorking.value = false
 

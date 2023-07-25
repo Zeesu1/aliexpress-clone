@@ -32,7 +32,7 @@
           class="relative h-full hover:text-#ff4646 cursor-pointer transition"
           :class="
             isAccountMenuOpen
-              ? 'bg-white border-x z-40'
+              ? 'bg-white border-x '
               : 'border border-#fafafa'
           "
           @mouseenter="isAccountMenuOpen = true"
@@ -59,11 +59,11 @@
             <div
               id="AccountMenu"
               v-if="isAccountMenuOpen"
-              class="absolute bg-white w-220px text-#333 z-9 top-32px -right-1px border shadow-[0_2px_8px_0_rgba(0,0,0,.1)]"
+              class="absolute bg-white w-220px text-#333 z-9 top-39px -right-1px border shadow-[0_2px_8px_0_rgba(0,0,0,.1)]"
             >
-              <div v-if="true">
+              <div v-if="!user">
                 <div class="text-semibold text-15px my-4 px-3">
-                  Welcome To AliExpress!
+                  Welcome to AliExpress!
                 </div>
                 <div class="flex items-center gap-1 px-3 mb-3">
                   <NuxtLink
@@ -73,33 +73,40 @@
                     Login / Register
                   </NuxtLink>
                 </div>
-                <div class="border-b" />
-                <ul class="bg-white">
-                  <li
-                    @click="navigateTo('/orders')"
-                    class="text-13px py-2 px-4 w-full hover:bg-gray-200"
-                  >
-                    My Orders
-                  </li>
-                  <li
-                    v-if="true"
-                    class="text-13px py-2 px-4 w-full hover:bg-gray-200"
-                  >
-                    Sign out
-                  </li>
-                </ul>
               </div>
+              <div v-else>
+                <div class="text-semibold text-15px my-4 px-3">
+                  Welcome {{ user.user_metadata?.full_name || user.email }}!
+                </div>
+              </div>
+              <div class="border-b" />
+              <ul class="bg-white">
+                <li
+                  @click="navigateTo('/orders')"
+                  class="text-13px py-2 px-4 w-full hover:bg-gray-200"
+                >
+                  My Orders
+                </li>
+                <li
+                  v-if="user"
+                  @click="client.auth.signOut()"
+                  class="text-13px py-2 px-4 w-full hover:bg-gray-200"
+                >
+                  Sign out
+                </li>
+              </ul>
             </div>
           </Transition>
         </li>
       </ul>
     </div>
+
     <div id="MainHeader" class="flex items-center w-full bg-white">
       <div
         class="flex lg:justify-start justify-between gap-10 max-w-1150px w-full px-3 py-5 mx-auto"
       >
         <NuxtLink to="/" class="min-w-170px">
-          <img width="170" src="~/assets/images/AliExpress-logo.png" />
+          <img width="170" src="~/assets/images/logo.png" />
         </NuxtLink>
 
         <div class="max-w-700px w-full md:block hidden">
@@ -125,7 +132,10 @@
             </div>
 
             <Transition name="fade">
-              <div v-if="items && items.length > 0" class="absolute bg-white max-w-700px h-auto w-full rounded-md shadow-lg">
+              <div
+                v-if="items && items.length > 0"
+                class="absolute bg-white max-w-700px h-auto w-full rounded-md shadow-lg"
+              >
                 <div v-for="item in items" class="p-1" :key="item.id">
                   <NuxtLink
                     :to="`/item/${item.id}`"
@@ -186,6 +196,9 @@ import { Products } from '@prisma/client'
 import { useUserStore } from '~/stores/user'
 
 const userStore = useUserStore()
+const client = useSupabaseClient()
+const user = useSupabaseUser()
+console.log(user)
 
 const isAccountMenuOpen = ref(false)
 const isCartHover = ref(false)
@@ -201,7 +214,8 @@ const searchByName = useDebounce(async () => {
   )
   items.value = data.value?.items || []
   isSearching.value = false
-})
+}, 200)
+
 watch(
   () => searchItem.value,
   async () => {
