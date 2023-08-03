@@ -65,13 +65,13 @@
 </template>
 
 <script setup lang="ts">
+import { Products } from '@prisma/client';
 import { useUserStore } from '~/stores/user'
-import type { Product } from '~/types/product'
 
 const userStore = useUserStore()
 
 const props = defineProps<{
-  product: Product
+  product: Products
   onSelected?: (id: number, selected: boolean) => void
 }>()
 const { product } = toRefs(props)

@@ -40,7 +40,7 @@ const props = defineProps({
 
 const { placeholder, max, inputType, error } = toRefs(props)
 
-let isFocused = ref(false)
+const isFocused = ref(false)
 
 const inputRef = computed({
   get: () => props.value,

@@ -32,13 +32,13 @@
         </div>
 
         <p class="flex items-center px-1 pt-0.5 text-xs text-#252525">
-          5,000+ sold
+          {{ Math.floor(Math.random() * 6) + 1 }},000+ sold
           <Icon
             name="material-symbols:star-rate"
             color="#757575"
             class="ml-1.5"
           />
-          4.7
+          {{ (Math.random() * 0.5 + 4.5).toFixed(1) }}
         </p>
 
         <p class="px-1 pt-0.5 text-xs text-#252525">
@@ -54,10 +54,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Product } from '~/types/product'
+import { Products } from '@prisma/client'
 
 const props = defineProps<{
-  product: Product
+  product: Products
 }>()
 const { product } = toRefs(props)
 
@@ -66,7 +66,7 @@ const priceComputed = computed(() => {
 })
 
 const oldPriceComputed = computed(() => {
-  const res = (product.value.price + product.value.price / 20)
+  const res = ((product.value.price * 100) + (product.value.price * 100 / 20)) / 100
   return res.toFixed(2)
 })
 </script>

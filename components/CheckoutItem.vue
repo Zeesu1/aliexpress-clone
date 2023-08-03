@@ -20,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Product } from '~/types/product'
+import { Products } from '@prisma/client'
 
 const props = defineProps<{
-  product: Product
+  product: Products
 }>()
 const { product } = toRefs(props)
 </script>

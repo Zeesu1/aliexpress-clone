@@ -143,7 +143,7 @@
                       <img class="rounded-md" width="40" :src="item.url" />
                       <div class="truncate ml-2">{{ item.title }}</div>
                     </div>
-                    <div class="truncate">${{ item.price }}</div>
+                    <div class="truncate">${{ item.price.toFixed(2) }}</div>
                   </NuxtLink>
                 </div>
               </div>
