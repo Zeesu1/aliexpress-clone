@@ -2,7 +2,7 @@
   <div id="MenuOverlay" class="fixed z-50 bottom-0 h-full w-full bg-white px-3">
     <div class="flex items-center justify-between py-5">
       <NuxtLink to="/" @click="userStore.isMenuOverlay = false">
-        <img width="170" src="/AliExpress-logo.png" />
+        <img width="170" src="~/assets/images/logo.png" />
       </NuxtLink>
 
       <button
@@ -45,7 +45,7 @@
           @click="signOut()"
           class="relative flex items-center justify-between py-2.5 border-b px-3 hover:bg-gray-100 cursor-pointer"
         >
-          <div class="flex items-center text-[20px] font-semibold">
+          <div class="flex items-center text-20px font-semibold">
             <Icon name="ph:sign-out-light" size="33" />
             <span class="pl-4">Sign out</span>
           </div>
@@ -56,7 +56,7 @@
           @click="signIn()"
           class="relative flex items-center justify-between py-2.5 border-b px-3 hover:bg-gray-100 cursor-pointer"
         >
-          <div class="flex items-center text-[20px] font-semibold">
+          <div class="flex items-center text-20px font-semibold">
             <Icon name="ph:sign-in-light" size="33" />
             <span class="pl-4">Sign in / Register</span>
           </div>

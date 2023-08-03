@@ -79,7 +79,7 @@
             <div class="flex items-center justify-between my-4">
               <div class="font-semibold">Total</div>
               <div class="text-2xl font-semibold">
-                $ <span class="font-extrabold">{{ total / 100 }}</span>
+                $ <span class="font-extrabold">{{ total.toFixed(2) }}</span>
               </div>
             </div>
 
@@ -123,11 +123,16 @@
 import MainLayout from '~/layouts/MainLayout.vue'
 import { useUserStore } from '~/stores/user'
 
+const route = useRoute()
+const runtimeConfig = useRuntimeConfig()
 const userStore = useUserStore()
 const user = useSupabaseUser()
-const route = useRoute()
 
 definePageMeta({ middleware: 'auth' })
+
+watchEffect(() => {
+  console.log('stripePK', runtimeConfig.public.stripePK)
+})
 
 let stripe = null
 let elements = null
@@ -145,10 +150,10 @@ onBeforeMount(async () => {
 
   total.value = 0.0
   if (user.value) {
-    const { data } = await useFetch(
+    const res = await $fetch(
       `/api/prisma/get-address-by-user/${user.value.id}`
     )
-    currentAddress.value = data.value.address
+    currentAddress.value = res.address
     setTimeout(() => (userStore.isLoading = false), 200)
   }
 })
@@ -163,7 +168,7 @@ onMounted(async () => {
   isProcessing.value = true
 
   userStore.checkout.forEach(item => {
-    total.value += item.price
+    total.value = ((total.value * 100) + (item.price * 100)) / 100
   })
 })
 
@@ -177,13 +182,12 @@ watch(
 )
 
 const stripeInit = async () => {
-  const runtimeConfig = useRuntimeConfig()
-  stripe = Stripe(runtimeConfig.stripePk)
+  stripe = Stripe(runtimeConfig.public.stripePK)
 
   let res = await $fetch('/api/stripe/paymentintent', {
     method: 'POST',
     body: {
-      amount: total.value,
+      amount: total.value * 100,
     },
   })
   clientSecret = res.client_secret

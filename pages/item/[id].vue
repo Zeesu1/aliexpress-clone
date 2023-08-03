@@ -76,7 +76,7 @@
           <button
             @click="addToCart()"
             :disabled="isInCart"
-            class="px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-#FF851A to-#FFAC2C"
+            class="w-40 px-6 py-2 rounded-lg text-white text-lg font-semibold bg-gradient-to-r from-#FF851A to-#FFAC2C"
           >
             <div v-if="isInCart">Is Added</div>
             <div v-else>Add to Cart</div>
@@ -99,7 +99,9 @@ const product = ref<any>(null)
 const currentImage = ref<string | null>(null)
 
 onBeforeMount(async () => {
-  const {data} = await useFetch(`/api/prisma/get-product-by-id/${route.params.id}`)
+  const { data } = await useFetch(
+    `/api/prisma/get-product-by-id/${route.params.id}`
+  )
   if (data.value && data.value.statusCode === 200) {
     product.value = data.value.product
   }

@@ -5,7 +5,7 @@
   <MenuOverlay
     :class="[
       {
-        'max-h-[100vh] transition-all duration-200 ease-in visible':
+        'max-h-100vh transition-all duration-200 ease-in visible':
           userStore.isMenuOverlay,
       },
       {
@@ -16,25 +16,27 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useUserStore } from '~/stores/user'
+
 const userStore = useUserStore()
 
 const route = useRoute()
 
-let windowWidth = ref(process.client ? window.innerWidth : '')
+const windowWidth = ref(process.client ? window.innerWidth : '')
 
 onMounted(() => {
   userStore.isLoading = true
   window.addEventListener('resize', function () {
+    console.log('resize', window.innerWidth)
     windowWidth.value = window.innerWidth
   })
 })
 
 watch(
   () => windowWidth.value,
-  () => {
-    if (windowWidth.value >= 767) {
+  (value) => {
+    if (Number(value) >= 767) {
       userStore.isMenuOverlay = false
     }
   }

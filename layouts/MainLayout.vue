@@ -31,9 +31,7 @@
         <li
           class="relative h-full hover:text-#ff4646 cursor-pointer transition"
           :class="
-            isAccountMenuOpen
-              ? 'bg-white border-x '
-              : 'border border-#fafafa'
+            isAccountMenuOpen ? 'bg-white border-x ' : 'border border-#fafafa'
           "
           @mouseenter="isAccountMenuOpen = true"
           @mouseleave="isAccountMenuOpen = false"
@@ -175,7 +173,8 @@
         </NuxtLink>
 
         <button
-          class="md:hidden block rounded-full p-1.5 -mt-4px bg-transparent hover:bg-gray-200"
+        class="md:hidden block rounded-full p-1.5 -mt-4px bg-transparent hover:bg-gray-200"
+        @click="userStore.isMenuOverlay = true"
         >
           <Icon name="radix-icons:hamburger-menu" size="33" />
         </button>
@@ -198,7 +197,6 @@ import { useUserStore } from '~/stores/user'
 const userStore = useUserStore()
 const client = useSupabaseClient()
 const user = useSupabaseUser()
-console.log(user)
 
 const isAccountMenuOpen = ref(false)
 const isCartHover = ref(false)
